@@ -1,5 +1,8 @@
 import Metal
 import MetalKit
+import Foundation
+
+let currentDirectoryPath = FileManager.default.currentDirectoryPath
 
 class Renderer: NSObject, MTKViewDelegate {
     private let device: MTLDevice
@@ -14,7 +17,7 @@ class Renderer: NSObject, MTKViewDelegate {
             if let commandQueue = device.makeCommandQueue() {
                 self.commandQueue = commandQueue
                 //let library = device.makeDefaultLibrary()
-                let shadername = "./Shaders.metallib"
+                let shadername = "\(currentDirectoryPath)/Shaders.metallib"
                 if let shaderfile = URL(string: shadername) {
                     if let library = try? device.makeLibrary(URL: shaderfile) {
 
@@ -29,6 +32,7 @@ class Renderer: NSObject, MTKViewDelegate {
                             self.pipelineState = pipelineState
                             super.init()
                             mtkView.delegate = self
+                            return
                         }
                     } else {
                         print("cannot load metal library from Shaders")
@@ -39,6 +43,10 @@ class Renderer: NSObject, MTKViewDelegate {
             }
         }
         return nil
+    }
+
+    deinit {
+        print("Renderer deinitialized")
     }
 
     func draw(in view: MTKView) {

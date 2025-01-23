@@ -3,10 +3,18 @@ import SwiftUI
 
 @main
 struct MetalApp: App {
+@NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
+    }
+}
+
+class AppDelegate: NSObject, NSApplicationDelegate {
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        return true // 关闭最后一个窗口时退出应用程序
     }
 }
 
